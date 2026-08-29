@@ -35,3 +35,16 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Coverage reports
+coverage.xml
+*.coverage
+
+# Jenkins
+jenkins_home/
+
+# Docker
+*.tar
+
+# Generated reports
+reports/
