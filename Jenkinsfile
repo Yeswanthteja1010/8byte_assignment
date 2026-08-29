@@ -33,15 +33,19 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                sh '''
-                    docker run --rm \
-                      --network sonar_default \
-                      -v "$PWD:/usr/src" \
-                      -w /usr/src \
-                      -e SONAR_HOST_URL="http://octabyte-sonarqube:9000" \
-                      -e SONAR_TOKEN="$SONAR_TOKEN" \
-                      sonarsource/sonar-scanner-cli
-                '''
+                withCredentials([
+                    string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')
+                ]) {
+                    sh '''
+                        docker run --rm \
+                        --network sonar_default \
+                        --volumes-from jenkins \
+                        -w /var/jenkins_home/workspace/8byte \
+                        -e SONAR_HOST_URL="http://octabyte-sonarqube:9000" \
+                        -e SONAR_TOKEN="$SONAR_TOKEN" \
+                        sonarsource/sonar-scanner-cli
+                    '''
+                }
             }
         }
 
