@@ -13,12 +13,12 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm \
-                      --network 8byte_assignment_default \
-                      -e DATABASE_URL="postgresql+psycopg://postgres:postgres@octabyte-postgres:5432/octabyte" \
-                      -v "$PWD/app:/app" \
-                      -w /app \
-                      python:3.12-slim \
-                      sh -c "pip install -r requirements-dev.txt && pytest --cov=app --cov-report=xml"
+                    --volumes-from jenkins \
+                    --network 8byte_assignment_default \
+                    -e DATABASE_URL="postgresql+psycopg://postgres:postgres@octabyte-postgres:5432/octabyte" \
+                    -w /var/jenkins_home/workspace/8byte/app \
+                    python:3.12-slim \
+                    sh -c "pip install -r requirements-dev.txt && pytest --cov=app --cov-report=xml"
                 '''
             }
         }
