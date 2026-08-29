@@ -9,14 +9,15 @@ pipeline {
             }
         }
 
+        
         stage('Test') {
             steps {
                 sh '''
                     docker run --rm \
-                      -v "$PWD/app:/app" \
-                      -w /app \
-                      python:3.12-slim \
-                      sh -c "pip install -r requirements-dev.txt && pytest --cov=app --cov-report=xml"
+                    -v "${WORKSPACE}/app:/app" \
+                    -w /app \
+                    python:3.12-slim \
+                    sh -c "pip install -r requirements-dev.txt && pytest --cov=app --cov-report=xml"
                 '''
             }
         }
